@@ -1,0 +1,52 @@
+<h1 mat-dialog-title>{{title}}</h1>
+<mat-dialog-content class="param-edit-form">
+    <form [formGroup]="editParamGroup" (ngSubmit)="onSubmit(editParamGroup)">
+        <div fxLayout="column" fxLayoutAlign="start none">
+
+            <ng-container *ngFor="let param of editParamGroup.controls | keyvalue">
+
+                <ng-container *ngIf="param.key === 'parameter_name'">
+                    <mat-form-field floatLabel="always" class="edit-form">
+                        <mat-label for=param.key>{{getLabelEqui(param.key)}}</mat-label>
+                        <input spellcheck="false" required matInput [formControlName]=param.key>
+                    </mat-form-field>
+                </ng-container>
+
+                <ng-container *ngIf="param.key === 'dependency_parameter_value'">
+                    <mat-form-field floatLabel="always" class="edit-form">
+                        <mat-label for=param.key>{{getLabelEqui(param.key)}}</mat-label>
+                        <mat-select [formControlName]=param.key>
+                            <mat-option *ngFor="let option of paramValOptions" [value]=option.parameter_name>
+                                {{option.parameter_name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </ng-container>
+
+                <ng-container *ngIf="param.key === 'dependency_parameter_type'">
+                    <mat-form-field floatLabel="always" class="edit-form">
+                        <mat-label for=param.key>{{getLabelEqui(param.key)}}</mat-label>
+                        <input spellcheck="false" matInput [formControlName]=param.key>
+                    </mat-form-field>
+                </ng-container>
+
+                <ng-container *ngIf="param.key === 'parameter_status'">
+                    <mat-form-field floatLabel="always" class="edit-form">
+                        <mat-label for=param.key>{{getLabelEqui(param.key)}}</mat-label>
+                        <mat-select [(value)]="selected" [formControlName]=param.key>
+                            <mat-option value="Active">Active</mat-option>
+                            <mat-option value="Inactive">Inactive</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </ng-container>
+
+            </ng-container>
+            <div fxLayout="row" fxLayoutAlign="space-between none" fxFlexOffset="5">
+                <button type="submit" [disabled]="!(editParamGroup.valid && editParamGroup.dirty)" mat-raised-button
+                    color="primary">Submit</button>
+                <button type="button" mat-raised-button color="accent" (click)="onCancel()">Cancel</button>
+            </div>
+        </div>
+    </form>
+</mat-dialog-content>
+

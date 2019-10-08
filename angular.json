@@ -1,0 +1,137 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "hfiles-asset-management": {
+      "root": "projects/hfiles-asset-management/",
+      "sourceRoot": "projects/hfiles-asset-management/src",
+      "projectType": "application",
+      "prefix": "app",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/hfiles-asset-management",
+            "index": "projects/hfiles-asset-management/src/index.html",
+            "main": "projects/hfiles-asset-management/src/main.ts",
+            "polyfills": "projects/hfiles-asset-management/src/polyfills.ts",
+            "tsConfig": "projects/hfiles-asset-management/tsconfig.app.json",
+            "assets": [
+              "projects/hfiles-asset-management/src/favicon.ico",
+              "projects/hfiles-asset-management/src/assets"
+            ],
+            "styles": [
+              "projects/hfiles-asset-management/src/styles.css",
+              "node_modules/angular-button-loader/style/button-loader.min.css"
+            ],
+            "scripts": [],
+            "es5BrowserSupport": true
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/hfiles-asset-management/src/environments/environment.ts",
+                  "with": "projects/hfiles-asset-management/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "hfiles-asset-management:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "hfiles-asset-management:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "hfiles-asset-management:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/hfiles-asset-management/src/test.ts",
+            "polyfills": "projects/hfiles-asset-management/src/polyfills.ts",
+            "tsConfig": "projects/hfiles-asset-management/tsconfig.spec.json",
+            "karmaConfig": "projects/hfiles-asset-management/karma.conf.js",
+            "styles": [
+              "projects/hfiles-asset-management/src/styles.css"
+            ],
+            "scripts": [],
+            "assets": [
+              "projects/hfiles-asset-management/src/favicon.ico",
+              "projects/hfiles-asset-management/src/assets"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/hfiles-asset-management/tsconfig.app.json",
+              "projects/hfiles-asset-management/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "hfiles-asset-management-e2e": {
+      "root": "projects/hfiles-asset-management-e2e/",
+      "projectType": "application",
+      "prefix": "",
+      "architect": {
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "projects/hfiles-asset-management-e2e/protractor.conf.js",
+            "devServerTarget": "hfiles-asset-management:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "hfiles-asset-management:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": "projects/hfiles-asset-management-e2e/tsconfig.e2e.json",
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "hfiles-asset-management"
+}

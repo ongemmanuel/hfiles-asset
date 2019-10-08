@@ -1,0 +1,46 @@
+.addCompDiv {
+    width: auto;
+    min-width: 300px;
+    margin-bottom: 10px;
+}
+
+.actBtn {
+    min-width: 76px;
+}
+
+mat-form-field {
+    width: 100%;
+}
+
+.addBtnIcon {
+    color: #008000;
+}
+
+button.removePeriod {
+    color: #B52E31;
+}
+
+.intVal{
+    font-size: 13px;
+}
+
+.intValError{
+    font-size: 10px;
+}
+
+mat-form-field{
+    margin-bottom: 10px;
+}
+
+.validateIdBtn{
+    height: 24px;
+    line-height: 24px;
+    width: auto;
+    font-size: 12px;
+}
+
+.addGreen{
+    background-color: #008000;
+    pointer-events: none;
+}
+

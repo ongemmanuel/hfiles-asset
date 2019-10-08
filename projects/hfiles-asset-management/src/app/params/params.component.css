@@ -1,0 +1,139 @@
+/* DISPLAY/LAYOUT */
+
+.params-container {
+    height: calc(100vh - 45px);
+}
+
+.select-company {
+    padding: 10px 0px 0px 14px;
+}
+
+mat-list-base {
+    padding: 0px;
+}
+
+mat-select {
+    font-size: 12px;
+}
+
+mat-toolbar {
+    height: 20px;
+    font-size: 12px;
+    background-color: transparent;
+    color: rgba(0, 0, 0, .54);
+}
+
+.param-list mat-list-item {
+    height: 25px;
+    cursor: pointer;
+}
+
+.param-list mat-list-item:hover {
+    background-color: #cecece;
+}
+
+mat-card {
+    border-radius: 0;
+    height: 100%;
+    width: 100%;
+}
+
+mat-card-content {
+    border: 2px solid #e8ecef;
+    width: 100%;
+    overflow-y: auto;
+}
+
+.mat-table {
+    width: 100%;
+}
+
+th.mat-header-cell {
+    border-bottom: 2px solid #e8ecef;
+}
+
+.custom-data:hover {
+    text-decoration: underline;
+}
+
+td.mat-cell {
+    border: none;
+    color: green;
+    font-size: 12px;
+}
+
+.custom-data {
+    color: #0c75b9;
+    cursor: pointer;
+}
+
+th.mat-header-cell:last-child, td.mat-cell:last-child {
+    text-align: end;
+}
+
+.mat-row:nth-child(even) {
+    background-color: #519ff91a;
+}
+
+.batchUploadBtn {
+    margin: 0px 10px 0px 10px;
+    height: 24px;
+    line-height: 24px;
+    font-size: 12px;
+    background-color: #304256;
+}
+
+.addFileCont {
+    height: 100vh;
+    padding: 30px;
+    width: auto;
+    background-image: url(../../assets/upload.png);
+    background-size: 85%;
+    background-repeat: no-repeat;
+    background-position: bottom right;
+}
+
+mat-form-field.paramBatchInput {
+    margin: 20px 0px 20px 0px;
+    min-width: 360px;
+    width: auto;
+}
+
+.browse {
+    font-size: 11px;
+    height: 28px;
+    line-height: 28px;
+    width: 72px;
+    background-color: #008000;
+    color: white;
+    margin-bottom: 5px;
+}
+
+.paramPanel{
+    margin: 0px 10px 0px 10px;
+    /* overflow-y: scroll; */
+}
+
+.param-list {
+    /* overflow-y: auto; */
+    overflow-x: hidden;
+    /* margin-right: 10px; */
+    margin-left: 10px;
+    overflow-y: auto;
+
+
+    
+}
+
+.expPnl{
+    background-color: transparent;
+    border-radius: 0px;
+    border: none;
+    box-shadow: none;
+}
+
+.left-panel {
+    overflow: hidden;
+    margin-bottom: 5px;
+    background-color: #f0f0f0;
+}

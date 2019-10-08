@@ -1,0 +1,54 @@
+<div class="appli-container">
+  <mat-toolbar class="header-assets" color="primary" fxHide="false">
+    <a mat-button fxShow="true" fxHide.gt-sm="true">
+      <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+    </a>
+    <span>Assets Admin</span>
+    <span class="spacer"></span>
+    <span class="accntName" *ngIf="usrData">{{usrData.fname}} {{usrData.lname}}</span>
+    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+      <mat-icon>arrow_drop_down</mat-icon>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item>
+        <mat-icon>account_circle</mat-icon>
+        <span>Account Information</span>
+      </button>
+      <button (click)="refresh()" mat-menu-item>
+        <mat-icon>supervisor_account</mat-icon>
+        <span>Switch Role</span>
+      </button>
+      <button (click)="logout()" mat-menu-item>
+        <mat-icon>power_settings_new</mat-icon>
+        <span>Logout</span>
+      </button>
+    </mat-menu>
+
+
+  </mat-toolbar>
+
+  <mat-sidenav-container *ngIf=openSideNav>
+    <mat-sidenav class="sidenav" fixedInViewport="true"
+      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'"
+      [opened]="!(isHandset$ | async)">
+      <mat-nav-list>
+
+        <ng-container *ngFor="let menu of menus">
+          <!-- ('ADM-3' | isAllowedByPermission) -->
+          <mat-list-item *ngIf="menu.key === 'generalPermission' && checkIfAllowed('ADM-3')" class="navlist"
+            routerLink={{menu.key}} routerLinkActive="active">{{menu.label}}</mat-list-item>
+          <mat-list-item *ngIf="menu.key === 'controlTotals' && checkIfAllowed('ADM-9')" class="navlist"
+            routerLink={{menu.key}} routerLinkActive="active">{{menu.label}}</mat-list-item>
+          <mat-list-item *ngIf="menu.key === 'parameters' && checkIfAllowed('ADM-5')" class="navlist"
+            routerLink={{menu.key}} routerLinkActive="active">{{menu.label}}</mat-list-item>
+          <mat-list-item *ngIf="menu.key === 'companySetup'" class="navlist" routerLink={{menu.key}}
+            routerLinkActive="active">{{menu.label}}</mat-list-item>
+        </ng-container>
+      </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+
+  </mat-sidenav-container>
+</div>

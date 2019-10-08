@@ -1,0 +1,33 @@
+<div class="company-container">
+  <mat-card div fxLayout="column" fxLayoutAlign="none">
+
+    <div fxLayout="row" fxLayoutAlign="space-between start">
+      <div>
+        <mat-card-title>Company Setup</mat-card-title>
+        <mat-card-subtitle>This allows you to manage the company details.
+        </mat-card-subtitle>
+      </div>
+      <div fxLayout="row" fxLayoutAlign="space-between start" fxLayoutGap="20px">
+        <button *ngIf="isAllowedByRole('ADM-1')" mat-raised-button color="accent" (click)="addCompany()">Add</button>
+        <button *ngIf="isAllowedByRole('ADM-1')" mat-raised-button color="accent" (click)="addCompanyByBatch()">Add By Batch</button>
+      </div>
+    </div>
+
+    <mat-card-content fxLayout="row">
+      <div class="setUpTable" fxFlex="33" *ngIf="isLoaded">
+        <table mat-table #compTable [dataSource]="companies" matSort>
+          <ng-container [matColumnDef]=col.key *ngFor="let col of setUpTable">
+            <th mat-header-cell *matHeaderCellDef>{{col.label}}</th>
+            <td mat-cell *matCellDef="let element">{{element[col.key]}}</td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="openForm(row)"></tr>
+        </table>
+      </div>
+
+      <company-edit-form fxFlex="67" (successEdit)="loadData()"></company-edit-form>
+
+    </mat-card-content>
+
+  </mat-card>
+</div>

@@ -1,0 +1,130 @@
+<div fxLayout="row" fxLayoutAlign="start none" class="params-container">
+  <div fxLayout="column" fxLayoutAlign="start none" class="left-panel" *ngIf="preSelectedComp!=undefined">
+    <div class="select-company">
+      <mat-form-field>
+        <mat-select #selectedCompany placeholder="Select company" [(value)]=preSelectedComp
+          (selectionChange)="changeDropDown($event.value, company)">
+          <mat-option *ngFor="let company of companyList | keyvalue" [value]=company.key>{{company.value}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <mat-toolbar>Parameters</mat-toolbar>
+
+    <button *ngIf="isAllowedByRole('ADM-6')" class="batchUploadBtn" mat-raised-button
+      (click)="openParameterBatchUploader()" color="primary">Batch
+      Upload</button>
+
+
+      <mat-list dense class="param-list">
+        <ng-container *ngFor="let pGroup of parArrGroups | keyvalue">
+          <mat-expansion-panel class="expPnl">
+            <mat-expansion-panel-header  collapsedHeight="28px" expandedHeight="28px">
+              <mat-panel-title>
+              {{pGroup.key}}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <ng-container *ngFor="let p of pGroup.value">
+                <mat-list-item class="paramPanel" (click)="populateTableParams(p, selectedCompany.value)">
+                {{p.label}}
+              </mat-list-item>
+            </ng-container>
+            </mat-expansion-panel>
+        </ng-container>
+      </mat-list>
+
+    <!-- <mat-list class="param-list">
+      <mat-accordion *ngFor="let pGroup of paramGroups">
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+             {{pGroup.label}}
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <ng-container *ngFor="let subMenu of subMenuList">
+              <mat-list-item *ngIf="isIncludedInGroup(pGroup.parameters, subMenu)" (click)="populateTableParams(subMenu, selectedCompany.value)">
+              {{subMenu.label}}
+            </mat-list-item>
+          </ng-container>
+          </mat-expansion-panel>
+      </mat-accordion>
+    </mat-list> -->
+
+    <!-- <mat-list dense class="param-list">
+      <mat-list-item *ngFor="let subMenu of subMenuList" (click)="populateTableParams(subMenu, selectedCompany.value)">
+        {{subMenu.label}}
+      </mat-list-item>
+    </mat-list> -->
+
+  </div>
+
+  <mat-card fxLayout="column" *ngIf="showParamTbl" fxFlex>
+
+    <div fxLayout="row" fxLayoutAlign="space-between start">
+      <div>
+        <mat-card-title>{{currentSelectedParam.label}}</mat-card-title>
+        <mat-card-subtitle>This allows you to manage the parameters used in the Assets Management Application.
+        </mat-card-subtitle>
+      </div>
+      <div>
+        <button *ngIf="isAllowedByRole('ADM-7')" mat-raised-button color="accent" (click)="addParameter()">Add</button>
+      </div>
+    </div>
+
+    <mat-card-content>
+
+      <!-- ORIGINAL -->
+      <table mat-table [dataSource]="dataSource">
+        <ng-container [matColumnDef]=col.key *ngFor="let col of newFiltered">
+          <th mat-header-cell *matHeaderCellDef>{{col.label}}</th>
+          <ng-container *ngIf="col.key !== 'action'">
+            <td mat-cell *matCellDef="let element">{{element[col.key]}}</td>
+          </ng-container>
+          <ng-container *ngIf="col.key === 'action'">
+            <td mat-cell class="custom-data" *matCellDef="let element" (click)="getDependencyParameterOptions(element)">
+              Edit</td>
+          </ng-container>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row #elemThis *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+
+    </mat-card-content>
+
+  </mat-card>
+
+  <mat-card fxLayout="column" *ngIf="showBatchUpload" fxFlex>
+
+    <div fxLayout="row" fxLayoutAlign="space-between start">
+      <div>
+        <mat-card-title>Upload Parameter by Batch</mat-card-title>
+        <mat-card-subtitle>Company: {{companyList[selectedComp]}}
+        </mat-card-subtitle>
+      </div>
+    </div>
+
+    <mat-card-content class="addFileCont">
+      <div fxLayout="column" fxLayoutAlign="space-evenly start">
+        <p>Attach the excel file that contains the list of parameters</p>
+        <input hidden #fileInput (change)="onFileSelect($event)" type=file>
+        <a [href]="getTemplateParam()" target="_blank">Download Template</a>
+
+
+        <mat-form-field class="paramBatchInput" fxFlex>
+          <input #inputDisplay matInput type="search" [value]="fileName" spellcheck="false" autocomplete="off"
+            [ngStyle]="{'color': colorStyleError() ? 'red' : 'green' }" (keydown)="$event.preventDefault()">
+          <button class="browse" mat-raised-button disableRipple matSuffix type="button" (click)="fileInput.click()">
+            Browse </button>
+          <mat-hint *ngIf="colorStyleError()" [ngStyle]="{'color': colorStyleError() ? 'red' : 'green' }">Excel files
+            only</mat-hint>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" [disabled]="selectedFile === undefined || isValidFile === false"
+          type=button (click)="uploadParameterFile()">Upload</button>
+
+      </div>
+    </mat-card-content>
+
+  </mat-card>
+
+</div>

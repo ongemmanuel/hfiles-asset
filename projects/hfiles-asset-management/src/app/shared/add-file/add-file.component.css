@@ -1,0 +1,46 @@
+h1 {
+    margin-bottom: 0px;
+}
+
+.uploadHolder {
+    height: auto;
+    width: 280px;
+    margin-bottom: 10px;
+}
+
+.msg {
+    font-size: 14px;
+}
+
+.content{
+    margin-bottom: 12px;
+}
+
+mat-icon{
+    color: #008000;
+}
+
+input {
+    width: 100%;
+    font-size: 12px;
+    /* cursor: pointer; */
+}
+
+.browse {
+    font-size: 11px;
+    height: 28px;
+    line-height: 28px;
+    width: 72px;
+    background-color: #008000;
+    color: white;
+    margin-bottom: 5px;
+}
+
+a{
+    font-size: 12px;
+    color: #047FC2;
+}
+
+p {
+    font-size: 12px;
+}

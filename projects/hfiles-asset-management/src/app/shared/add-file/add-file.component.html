@@ -1,0 +1,21 @@
+<div class="uploadHolder">
+  <h1 mat-dialog-title>Add Company by Batch</h1>
+  <div class="content" fxLayout="column" fxLayoutAlign="space-around stretch">
+    <p class="msg">Attach the file that contains the list of companies.</p>
+    <a [href]="templateLink()" target="_blank">Download Template</a>
+    <input hidden #fileInput (change)="onFileSelect($event)" type="file">
+    <mat-form-field fxFlex>
+      <input matInput type="search" [value]="fileName" spellcheck="false" autocomplete="off"
+        [ngStyle]="{'color': colorStyleError() ? 'red' : 'green' }" (keydown)="$event.preventDefault()">
+      <button class="browse" mat-raised-button disableRipple matSuffix type="button" (click)="fileInput.click()">
+        Browse </button>
+      <mat-hint *ngIf="colorStyleError()" [ngStyle]="{'color': colorStyleError() ? 'red' : 'green' }">Excel files only
+      </mat-hint>
+    </mat-form-field>
+  </div>
+  <div mat-dialog-actions fxLayout="row" fxLayoutAlign="space-between start">
+    <button mat-raised-button color="primary" [disabled]="selectedFile === undefined || isValidFile === false"
+      (click)="uploadFile()">Upload</button>
+    <button mat-raised-button color="accent" (click)="cancelUpload()">Cancel</button>
+  </div>
+</div>

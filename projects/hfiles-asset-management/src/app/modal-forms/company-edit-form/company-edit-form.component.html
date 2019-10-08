@@ -1,0 +1,138 @@
+<ng-container *ngIf="openForm">
+    <form #myForm [formGroup]="compEditGroup" (ngSubmit)="saveEdit(compEditGroup.getRawValue())">
+        <div class="formWrap" fxLayout="column" fxLayoutAlign="none stretch">
+
+            <mat-toolbar fxLayout="row" fxLayoutAlign="space-between center">
+                <span>{{formTitle}}</span>
+                <div class="saveCancelCont" fxLayoutGap="20px">
+                    <button type="button" mat-raised-button color="primary" class="companyEditBtn" (click)="enableFormEdit()"
+                        *ngIf="!isEditActive && isAllowedByRole('ADM-1')">Edit</button>
+                    <button type="submit" [disabled] = compEditGroup.invalid color="primary" mat-raised-button class="companyEditBtn"
+                       *ngIf="isEditActive">Save</button>
+                    <button type="button" color="secondary" mat-raised-button class="companyEditBtn" (click)="cancelEdit()"
+                        *ngIf="isEditActive">Cancel</button>
+                </div>
+            </mat-toolbar>
+
+            <div fxLayout="column" class="formEditCont" fxLayoutAlign="stretch">
+
+                <div fxLayout="column" fxLayoutAlign="none stretch" fxLayoutGap="10px">
+                    <ng-container *ngFor="let control of config">
+
+                        <mat-form-field *ngIf="control.type === 'text'" floatLabel="always">
+                            <mat-label for="control.key">{{control.label}}</mat-label>
+                            <input [required]="control.isRequired" matInput formControlName="{{control.key}}">
+                            <mat-error *ngIf="compEditGroup.get(control.key).errors !== null &&
+                            compEditGroup.get(control.key).touched">
+                                {{getErrorMessage(compEditGroup.get(control.key))}}
+                            </mat-error>
+                        </mat-form-field>
+
+                        <ng-container *ngIf="control.type === 'selectize'" [formArrayName]="control.key">
+
+                            <ng-container
+                                *ngFor="let innerControl of compEditGroup.get(control.key).controls; let i = index">
+                                <mat-form-field fxFlex floatLabel="always">
+                                    <mat-label for="innerControl">{{control.label}} <span *ngIf="i!=0">{{i+1}}</span>
+                                    </mat-label>
+                                    <input [required]="control.isRequired" matInput [formControl]="innerControl">
+
+                                    <button mat-icon-button disableRipple type="button" matSuffix 
+                                    
+                                        *ngIf="i === 0"
+                                        color="accent" class="addPeriod"
+                                        [disabled]="compEditGroup.get(control.key).controls[i].disabled"
+                                        (click)="addElem(control)"><mat-icon>add_box</mat-icon></button>
+
+                                    <button type="button" matSuffix class="removePeriod" mat-icon-button disableRipple
+                                         [disabled]="compEditGroup.get(control.key).controls[i].disabled"
+                                        *ngIf="compEditGroup.get(control.key).length > 1 && i !== 0"
+                                        (click)="removeElem(control.key, i)">
+                                        <mat-icon>remove_circle</mat-icon>
+                                    </button>
+                                    <mat-error *ngIf="compEditGroup.get(control.key).controls[i].errors !== null && 
+                                compEditGroup.get(control.key).controls[i].touched">
+                                {{getErrorMessage(compEditGroup.get(control.key).controls[i])}}</mat-error>
+
+                                </mat-form-field>
+                            </ng-container>
+                        </ng-container>
+
+                    </ng-container>
+
+                    <!-- PAYROLL -->
+                    <!-- PAYROLL FREQUENCY -->
+
+                    <ng-container>
+                        <mat-form-field floatLabel="always">
+                            <mat-label for="payroll_frequency">Payroll Frequency</mat-label>
+                            <mat-select formControlName="payroll_frequency">
+                                <mat-option *ngFor="let freq of payrollFreqDropdown" [value]=freq>
+                                    {{freq}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </ng-container>
+
+                    <div class="payrollHeader" fxLayout="row" fxLayoutAlign="space-between center">
+                        <span>Payroll Periods</span>
+                        <button type="button" disableRipple fxLayoutAlign="end center" mat-icon-button
+                        [disabled] = "compEditGroup.disabled"
+                            class="addPeriod" (click)="addPayrollPeriod('payroll_periods')">
+                            <mat-icon>add_box</mat-icon>
+                        </button>
+                    </div>
+
+                    <ng-container *ngIf="compEditGroup.get('payroll_periods').controls !== null">
+                        <div class="payrollPeriodWrap" fxLayout="column" formArrayName="payroll_periods" *ngFor="let group of compEditGroup.get('payroll_periods').controls; 
+                            let i = index">
+
+                            <button type="button" style="margin-left: auto" class="removePeriod" mat-icon-button disableRipple
+                                [disabled] = "compEditGroup.disabled"
+                                (click)="removeElem('payroll_periods', i)">
+                                <mat-icon>indeterminate_check_box</mat-icon>
+                            </button>
+
+                            <div fxLayout="row" fxLayoutAlign="space-evenly center" [formGroupName]="i">
+                                <mat-form-field fxFlex="47" floatLabel="always">
+                                    <mat-label for="period_id">Period ID</mat-label>
+                                    <input matInput formControlName="period_id">
+                                </mat-form-field>
+                                <mat-form-field fxFlex="47" floatLabel="always">
+                                    <mat-label for="period_name">Period Name</mat-label>
+                                    <input matInput formControlName="period_name">
+                                </mat-form-field>
+                            </div>
+
+                            <div fxLayout="column" fxLayoutAlign="start center">
+
+                                <div class="headerHolder" fxLayout="row" fxLayoutAlign="start start">
+                                    <label [ngClass]="{'disabledBtn': !isEditActive, 'colorAdd':isEditActive}"
+                                        class="headerKeys">Period Keys</label>
+                                </div>
+
+                                <div fxLayout="row" fxLayoutAlign="space-between start" [formGroupName]="i">
+                                    <mat-card *ngFor="let perKey of totalPerKeys | keyvalue" class="payrollCard"
+                                        fxLayout="column" fxLayoutAlign="space-between start">
+                                        <mat-card-header>
+                                            <mat-card-subtitle>{{labelChangePerKeys(perKey.key)}}
+                                            </mat-card-subtitle>
+                                        </mat-card-header>
+                                        <mat-card-content fxLayout="column" fxLayoutAlign="space-around stretch">
+                                            <mat-checkbox  [checked]="isSelected(i, element)"
+                                           [disabled] = "compEditGroup.disabled" 
+                                                *ngFor="let element of perKey.value">{{element}}
+                                            </mat-checkbox>
+                                        </mat-card-content>
+                                    </mat-card>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+    </form>
+</ng-container>
+
+    <!-- [ngClass]="{'disabledBtn': !isEditActive}" -->

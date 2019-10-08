@@ -1,0 +1,55 @@
+<div class="addCompDiv">
+  <h2 mat-dialog-title>Add Company</h2>
+  <form [formGroup]="compAddFormGroup" (ngSubmit)="onSubmit(compAddFormGroup.value)" *ngIf="isReady">
+    <div mat-dialog-content>
+      <div fxLayout="column" fxLayoutAlign="space-around start">
+    
+        <ng-container *ngFor="let control of config">
+         
+          <mat-form-field *ngIf="control.type === 'text' || control.type === ''" floatLabel="always">
+            <mat-label for="control.key">{{control.label}}</mat-label>
+            <input matInput #inputVal *ngIf="control.key === 'company_id'" (input)="onValChange(inputVal.value)" class="intVal" 
+             [required]="control.isRequired" [formControlName]="control.key">
+            <input matInput *ngIf="control.key !== 'company_id'" class="intVal" [required]="control.isRequired"
+              [formControlName]="control.key">
+            <button type="button" color="primary" *ngIf="control.key === 'company_id'" matSuffix class="validateIdBtn" mat-raised-button
+            [ngClass]="{'addGreen': idValid}" disableRipple buttonLoader
+              (click)="checkIdValidity()"><span>{{validateBtnTxt}}</span></button>
+            <mat-error class="intValError" *ngIf="compAddFormGroup.get(control.key).errors !== null &&
+                compAddFormGroup.get(control.key).touched">
+              {{getErrorMessage(compAddFormGroup.get(control.key))}}
+            </mat-error>
+          </mat-form-field>
+
+          <ng-container *ngIf="control.type === 'selectize'" [formArrayName]="control.key">
+            <ng-container *ngFor="let innerControl of compAddFormGroup.get(control.key).controls; let i = index">
+              <mat-form-field fxFlex floatLabel="always">
+                <mat-label for=i>{{control.label}} <span *ngIf="i!=0">{{i+1}}</span>
+                </mat-label>
+                <input class="intVal" #inputValArray [required]="control.isRequired" matInput [formControlName]=i>
+                <button class="addBtnIcon" mat-icon-button disableRipple type="button" matSuffix
+                  (click)="addElem(control)" *ngIf="i === 0">
+                  <mat-icon>add_box</mat-icon>
+                </button>
+                <button matSuffix class="removePeriod" mat-icon-button disableRipple
+                  (click)="removeElem(control.key, i)" *ngIf="compAddFormGroup.get(control.key).length > 1 && i !== 0">
+                  <mat-icon>remove_circle</mat-icon>
+                </button>
+                <mat-error class="intValError" *ngIf="selectedArray(control.key).controls[i].errors !== null && 
+                    compAddFormGroup.get(control.key).controls[i].touched">
+                  {{getErrorMessage(selectedArray(control.key).controls[i])}}</mat-error>
+              </mat-form-field>
+            </ng-container>
+          </ng-container>
+
+        </ng-container>
+
+      </div>
+    </div>
+    <div mat-dialog-actions fxLayoutAlign="space-between center">
+      <button type="submit" mat-raised-button color="primary" class="actBtn"
+        [disabled]="compAddFormGroup.invalid || this.idValid === false">Add</button>
+      <button type="button" mat-raised-button color="accent" (click)="closeAdd()">Cancel</button>
+    </div>
+  </form>
+</div>

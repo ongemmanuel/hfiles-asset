@@ -1,0 +1,138 @@
+mat-form-field mat-label {
+    color: #047FC2;
+    font-size: 16px;
+}
+
+mat-label mat-icon{
+    color:green;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+mat-form-field.mat-form-field-invalid  mat-label{
+    color:#f44336;
+}
+
+mat-form-field.mat-form-field-disabled mat-label {
+    color: black;
+}
+
+mat-form-field {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.formEditCont {
+    overflow-x: hidden;
+ }
+
+div.formWrap {
+    overflow: hidden;
+    height: calc(100vh - 144px);
+    width: 100%;
+}
+
+mat-toolbar {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: transparent;
+}
+
+mat-toolbar a{
+    color: #047FC2;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+mat-toolbar a:hover{
+   text-decoration: underline;
+}
+
+.saveCancelCont{
+    padding: 0;
+    margin: 0;
+    box-sizing: content-box;
+}
+
+.headerKeys{
+    margin-top: 10px;
+    margin-left: 30px;
+}
+
+
+.headerHolder{
+    width: 100%;
+    height: auto;
+}
+
+.colorAdd{
+    color: #047FC2;
+}
+
+mat-toolbar.payrollDivi{
+    border-top: 2px solid #047FC2;
+    margin-top: 20px;
+}
+
+.disabledDivi{
+    opacity: 0.6;
+}
+
+/* .payrollFreq{
+    margin-top: 20px;
+} */
+
+.payrollHeader{
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+
+.payrollPeriodWrap{
+    height: auto;
+    box-sizing: border-box;
+    border: 1px solid rgba(0, 0, 0, .4);
+    margin-left: 20px;
+    width: calc(100% - 40px);
+    margin-bottom: 20px;
+}
+
+button.addPeriod{
+    color: #008000;
+}
+
+button.removePeriod{
+    color: #B52E31;
+}
+
+mat-card.payrollCard{
+    border-radius: 0px;
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+}
+
+mat-card-title{
+    color: #047FC2;
+    margin: 0;
+}
+
+mat-card-title.disabledHeader{
+    color: black;
+}
+
+mat-label.perKeysHeader{
+    color: #047FC2;
+    font-size: 12px;
+    padding-left: 15px;
+}
+
+mat-label.perKeysHeader.disabledHeader{
+    color: black;
+}
+
+.companyEditBtn{
+    min-width: 76px;
+    width: auto;
+}
+
+
+

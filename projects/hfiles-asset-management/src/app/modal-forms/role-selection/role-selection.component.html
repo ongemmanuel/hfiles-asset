@@ -1,0 +1,15 @@
+<div class="role-select-modal">
+    <span>Login As</span>
+    <form [formGroup]="roleSelectGroup" (ngSubmit)="onSubmit(roleSelectGroup.value)"  fxLayout="column" fxLayoutAlign="start start">
+        <mat-radio-group  formControlName="selectedRole">
+            <div class="role-elem" fxLayout="row" fxLayoutAlign="space-between center" *ngFor="let btn of radiobtns">
+                <div fxLayout="column" fxLayoutAlign="start start">
+                    <label mat-dialog-title>{{btn.roleName}}</label>
+                    <sub>{{btn.roleId}}</sub>
+                </div>
+                <mat-radio-button value={{btn.roleId}}></mat-radio-button>
+            </div>
+        </mat-radio-group>
+        <button type="submit" [disabled]="!roleSelectGroup.valid" mat-raised-button color="primary">Proceed</button>
+    </form>
+</div>

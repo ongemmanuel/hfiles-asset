@@ -1,0 +1,97 @@
+<div class="general-permission-cointainer">
+  <mat-card div fxLayout="column" fxLayoutAlign="none">
+    <div fxLayout="row" fxLayoutAlign="space-between start">
+      <div>
+        <mat-card-title>General Permission</mat-card-title>
+        <mat-card-subtitle>This enables you to manage role permissions provided the roles are existing in SSO.
+        </mat-card-subtitle>
+      </div>
+    </div>
+    <mat-card-content fxLayout="column">
+      <div fxLayout="row" fxLayoutAlign="space-between">
+        <div>
+          <label>Select Role: </label>
+          <mat-form-field>
+            <mat-select (selectionChange)="retrieveValues($event.value)">
+              <mat-option *ngFor="let role of rolesList" [value]="role.id">{{role.label}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="buttonHolder" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="15px">
+            <button mat-raised-button (click)="enableEdit()" 
+            *ngIf="!isEditActive && selectedRole !== null && isAllowedByRole('ADM-4')"
+            >Edit</button>
+            <button mat-raised-button (click)="saveValues()" *ngIf="isEditActive" [disabled]="permissionFormGroup.pristine">Save</button>
+            <button mat-raised-button (click)="cancelEdit()" *ngIf="isEditActive">Cancel</button>
+        </div>
+        
+      </div>
+      <mat-card class="innerMat" *ngIf="selectedRole !== null" [formGroup]="permissionFormGroup">
+        <ng-container *ngIf="selectedRole !== null">
+          <ng-container formGroupName='permission'>
+            <mat-tab-group>
+              <mat-tab *ngFor="let tab of permissionTab | keyvalue : returnZero; let i = index"
+                [label]="tab.key | mapKeyToName">
+                <div class="checkBoxHolder" fxLayout="column" fxLayoutAlign="start start">
+                  <ng-container *ngIf="tab.key === 'companies'">
+                    <ng-container [formGroupName]=tab.key>
+                      <ng-container *ngFor="let control of compsArray.controls | keyvalue : returnZero; let j = index">
+                        <mat-expansion-panel [disabled]="true">
+                          <mat-expansion-panel-header [collapsedHeight]="'32px'" [expandedHeight]="'32px'">
+                            <mat-panel-title>
+                              <mat-checkbox [formControlName]=control.key>{{companiesArray[control.key]}}</mat-checkbox>
+                            </mat-panel-title>
+                          </mat-expansion-panel-header>
+                        </mat-expansion-panel>
+                      </ng-container>
+                    </ng-container>
+                  </ng-container>
+                  <ng-container *ngIf="tab.key !== 'companies'">
+                    <ng-container formGroupName='modules'>
+                      <ng-container [formGroupName]=tab.key>
+                        <ng-container
+                          *ngFor="let ctrl of permissionElem(tab.key).controls | keyvalue : returnZero; let j = index">
+                          <mat-expansion-panel *ngIf="isThisFormControl(ctrl)" [disabled]="isThisFormControl(ctrl)">
+                            <mat-expansion-panel-header [collapsedHeight]="'32px'" [expandedHeight]="'32px'">
+                              <mat-panel-title>
+                                <mat-checkbox class="checkBoxExpansion" click-stop-propagation
+                                  [formControlName]=ctrl.key>{{ctrl.key | mapKeyToName}}
+                                </mat-checkbox>
+                              </mat-panel-title>
+                            </mat-expansion-panel-header>
+                          </mat-expansion-panel>
+                          <mat-expansion-panel [formGroupName]=ctrl.key *ngIf="!isThisFormControl(ctrl)"
+                            [disabled]="isThisFormControl(ctrl)">
+                            <mat-expansion-panel-header [collapsedHeight]="'32px'" [expandedHeight]="'32px'">
+                              <mat-panel-title>
+                                <mat-checkbox id={{ctrl.key}} #parentCheck [disabled]=!isEditActive (change)="triggerChild($event, tab.key, ctrl.key)" click-stop-propagation
+                                  class="checkBoxExpansion">{{ctrl.key | mapKeyToName}}</mat-checkbox>
+                              </mat-panel-title>
+                            </mat-expansion-panel-header>
+                            <ng-container
+                              *ngFor="let innerGroup of ctrl.value.controls | keyvalue : returnZero; let k = index">
+                              <ng-container [formGroupName]=innerGroup.key>
+                                <li fxLayout="column"
+                                  *ngFor="let innerControl of innerGroup.value.controls | keyvalue : returnZero; let l = index">
+                                  <mat-checkbox 
+                                  (change)="triggerParent($event, tab.key, ctrl.key, parentCheck)"
+                                  [formControlName]=innerControl.key>
+                                    {{getEquivalentName(tab.key, ctrl.key, innerControl.key)}}
+                                  </mat-checkbox>
+                                </li>
+                              </ng-container>
+                            </ng-container>
+                          </mat-expansion-panel>
+                        </ng-container>
+                      </ng-container>
+                    </ng-container>
+                  </ng-container>
+                </div>
+              </mat-tab>
+            </mat-tab-group>
+          </ng-container>
+        </ng-container>
+      </mat-card>
+    </mat-card-content>
+  </mat-card>
+</div>
